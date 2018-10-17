@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{title}}</title>
+    </head>
+    <body>
+        <table border="1">
+            <thead>
+                <th>厂家</th>
+                <th>产品</th>
+            </thead>
+            <tbody>
+                {% for record in record_list %}
+                    <tr>
+                        <td>{{ record.company }}</td>
+                        <td>{{ record.product }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form action="/stock/in", method="POST">
+            <div>
+                 <select name="company" id="company">
+                    <option></option>
+                     <option selected="selected">--请选择厂家--</option>
+                    {% for cid, company in company_dict.items()%}
+                        <option value={{cid}}>{{company}}</option>
+                    {% endfor %}
+                </select>
+                <select name="product" id="product">
+                    <option></option>
+                    <option selected="selected">--请选择产品--</option>
+                    {% for pid, product in product_dict.items()%}
+                        <option value={{pid}}>{{product}}</option>
+                    {% endfor %}
+                </select>
+                <input>
+            </div>
+            <div>
+                <input type="submit" value="提交" />
+            </div>
+        </form>
+    </body>
+</html>

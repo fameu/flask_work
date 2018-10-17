@@ -1,20 +1,31 @@
-from flask import Flask
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hello World-Famu!'
+
+record_list = []
+company_dict = {1:"HUAWEI", 2:"HP", 3:"Inspur"}
+product_dict = {1:"DDR4-2400",2:"DDR4-3000",3:"DDR4-3200"}
+
+@app.route("/stock/in", methods=["GET", "POST"])
+def stock_in():
+    postData = request.form
+    print(postData)
+    getData = request.args
+    print(getData)
+
+    if request.method == "POST":
+        cid = int(request.form["company"])
+        pid = int(request.form["product"])
+        record_list.append({"company":company_dict[cid], "product":product_dict[pid]})
+    return render_template("stock_in.html", title="入库记录", record_list=record_list, company_dict=company_dict, product_dict=product_dict)
 
 
-@app.route("/stock-out")
-def order_record():
-    return "出库单-测试"
+@app.route("/stock/out")
+def stock_out():
+    return render_template("stock_out.html", title="出库记录")
 
 
-@app.route("/stock-in")
-def ship_record():
-    return "入库单-测试"
-
+print(app.url_map)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
