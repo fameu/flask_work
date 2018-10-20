@@ -23,7 +23,11 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="ecb97225-4dfa-4221-a045-8df38adccb50">
+        <schema name="main" object-types="column, constraint, index, table, dataset trigger, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="ecb97225-4dfa-4221-a045-8df38adccb50">
@@ -45,6 +49,7 @@ select * from role;]]></console>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-list connection-id="ecb97225-4dfa-4221-a045-8df38adccb50" dataset="main.stock_out" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="ecb97225-4dfa-4221-a045-8df38adccb50" dataset="main.company" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="ecb97225-4dfa-4221-a045-8df38adccb50" dataset="main.user" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="ecb97225-4dfa-4221-a045-8df38adccb50" dataset="main.stock_in" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="ecb97225-4dfa-4221-a045-8df38adccb50" dataset="main.product" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="ecb97225-4dfa-4221-a045-8df38adccb50" dataset="main.role" active-filter-id="EMPTY_FILTER" />
