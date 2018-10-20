@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{title}}</title>
+    </head>
+    <body>
+        <table border="1">
+            <thead>
+                <th>编号</th>
+                <th>名字</th>
+            </thead>
+            <tbody>
+                {% for user in userList %}
+                    <tr>
+                        <td>ZQQ2018-{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form action="/user/add", method="POST">
+            <div>
+                名字：<input type="TEXT", name="name"/>
+            </div>
+            <div>
+                <input type="submit" value="提交" />
+            </div>
+        </form>
+    </body>
+</html>

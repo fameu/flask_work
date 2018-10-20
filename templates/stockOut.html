@@ -9,12 +9,14 @@
             <thead>
                 <th>厂家</th>
                 <th>产品</th>
+                <th>数量</th>
             </thead>
             <tbody>
-                {% for record in record_list %}
+                {% for record in stockInList %}
                     <tr>
                         <td>{{ record.company }}</td>
                         <td>{{ record.product }}</td>
+                        <td>{{ record.cnt }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -22,21 +24,25 @@
 
         <form action="/stock/in", method="POST">
             <div>
-                 <select name="company" id="company">
+                 厂家：<select name="company" id="company">
                     <option></option>
                      <option selected="selected">--请选择厂家--</option>
-                    {% for cid, company in company_dict.items()%}
-                        <option value={{cid}}>{{company}}</option>
+                    {% for ob in companyList%}
+                        <option value={{ob.id}}>{{ob.name}}</option>
                     {% endfor %}
                 </select>
-                <select name="product" id="product">
+            </div>
+            <div>
+                产品：<select name="product" id="product">
                     <option></option>
                     <option selected="selected">--请选择产品--</option>
-                    {% for pid, product in product_dict.items()%}
-                        <option value={{pid}}>{{product}}</option>
+                    {% for ob in productList%}
+                        <option value={{ob.id}}>{{ob.name}} - {{ob.info}}</option>
                     {% endfor %}
                 </select>
-                <input>
+            </div>
+            <div>
+                数量：<input type="TEXT", name="cnt"/>
             </div>
             <div>
                 <input type="submit" value="提交" />
