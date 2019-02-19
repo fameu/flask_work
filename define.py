@@ -36,4 +36,7 @@ def ERROR(msg):
 
 
 def formatstring(data):
-	return str(data)
+    return str(data)
+
+def evalstring(str):
+    return eval(str)
