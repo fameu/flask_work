@@ -47,6 +47,11 @@ class CSaveObject(object):
 
 		for k, v in self.m_DiffSave:
 			pd[v] = evalstring(data.get(k))
+
+		for k, vlst in self.m_SubSaveKey:
+			d = evalstring(data.get(k))
+			for v in vlst:
+				pd[v] = d.get(v)
 		self.Data.update(pd)
 
 
