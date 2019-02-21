@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 from db.database import *
-import time
 import models.user
 import models.company
 import models.product

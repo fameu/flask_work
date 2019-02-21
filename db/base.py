@@ -27,7 +27,6 @@ class CSaveObject(object):
 	# 初始化 - 从0新建，或者读取数据库
 	def __int__(self, id):
 		self.m_ID = id
-		self.__Callback = []	# 回调
 		self.Data = {}		# 存数据库的数据
 		self.ApplyData = {}	# 不存数据库的数据
 
@@ -35,7 +34,6 @@ class CSaveObject(object):
 		if id:
 			self.m_New = True
 		else:
-			self._Loading = True
 			self.Load()
 
 	# ------------- 辅助函数 ------------
@@ -53,7 +51,6 @@ class CSaveObject(object):
 			for v in vlst:
 				pd[v] = d.get(v)
 		self.Data.update(pd)
-
 
 	# 从内存数据到数据库数据的转换
 	def _Data2Sql(self):
@@ -75,19 +72,31 @@ class CSaveObject(object):
 		return d
 	# ------------- 辅助函数 ------------
 
+	# ------------- 功能 ---------------
+	def IsNew(self):
+		return self.m_New
+
+	# ------------- 功能 ---------------
+
 	# ------------- 数据库操作 ------------
 	# 保存
 	def Save(self):
 		data = self._Data2Sql()
-		return SSave(data)
-	# 查询
+		if self.IsNew():
+			nid = SNew(self.m_DataTable, self.m_ID, data)
+			self.m_ID = nid
+			self.m_New = False
+		else:
+			SSave(self.m_DataTable, self.m_ID, data)
+
+	# 查询所有列
 	def Query(self):
-		return SQuery(self.m_ID)
+		return SQuery(self.m_DataTable, self.m_ID)
+
 	# ------------- 数据库操作 ------------
 
 	# 逻辑处理
 	def Load(self):
-		# 这里会不会存在异步的问题存在呢
 		data = self.Query()
 		self._LoadData(data)
 
@@ -96,8 +105,3 @@ class CSaveObject(object):
 			self.__New = True
 		else:
 			self._Sql2Data(data)
-
-		self._Loading = False
-
-		for cb in self.__Callback:
-			cb(self)
