@@ -31,7 +31,7 @@ class CSaveObject(object):
 		self.ApplyData = {}	# 不存数据库的数据
 
 		# 根据ID是否有来判断是新建还是查询
-		if id:
+		if id == 0:
 			self.m_New = True
 		else:
 			self.Load()
@@ -83,6 +83,7 @@ class CSaveObject(object):
 	def Save(self):
 		data = self._Data2Sql()
 		if self.IsNew():
+			# 这里用SNew 是担心多并发情况下，select 和 insert 对应不上
 			nid = SNew(self.m_DataTable, self.m_ID, data)
 			self.m_ID = nid
 			self.m_New = False
@@ -93,6 +94,9 @@ class CSaveObject(object):
 	def Query(self):
 		return SQuery(self.m_DataTable, self.m_ID)
 
+	@classmethod
+	def QueryMax(cls):
+		return SMaxID(cls.m_DataTable)
 	# ------------- 数据库操作 ------------
 
 	# 逻辑处理

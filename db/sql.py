@@ -74,12 +74,14 @@ def _SQuery(tid, id):
 # ÐÂ½¨
 def SNew(tid, id, data):
 	sql = _SInsert(tid, id, data)
-	maxsql = _SMaxID(tid)
-
 	if SQL_TYPE == SSQL_SQLITE:
 		sqlite.New(sql)
-		return id or sqlite.Query(maxsql)
+		return id or  SMaxID(tid, id)
 
+def SMaxID(tid):
+	maxsql = _SMaxID(tid)
+	if SQL_TYPE == SSQL_SQLITE:
+		return sqlite.Query(maxsql)
 # ±£´æ
 def SSave(tid, id, data):
 	sql = _SSaveSql(tid, id, data)
