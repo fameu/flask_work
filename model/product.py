@@ -13,9 +13,9 @@ class CProduct(CSaveObject):
 	m_DataTable = DTABLE_PRODUCT
 	m_EasySave = {
 		"name"	: "m_Name",
+		"info"	: "m_Info",
 	}
 	m_DiffSave = {
-		"info"	: "m_Info",
 	}
 
 class CProductList(object):
@@ -33,7 +33,7 @@ class CProductList(object):
 		return len(self.Products) >= PRODUCT_MAX
 
 	def LoadProducts(self):
-		for id in xrange(1, CProduct.QueryMax()):
+		for id in xrange(1, CProduct.QueryMax()+1):
 			pob = CProduct(id)
 			self.Products.append(pob)
 

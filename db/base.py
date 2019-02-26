@@ -90,7 +90,13 @@ class CSaveObject(object):
 
 	# 查询所有列
 	def Query(self):
-		return SQuery(self.m_DataTable, self.m_ID)
+		dct = {}
+		ridx = {}
+		rows, data = SQuery(self.m_DataTable, self.m_ID)
+		for idx, rdata in enumerate(rows):
+			_, name, _, _, _, _ = rdata
+			ridx[idx] = name
+		return dict(zip([name for _,name,_, _, _, _ in rows], data[0]))
 
 	@classmethod
 	def QueryMax(cls):
@@ -103,7 +109,6 @@ class CSaveObject(object):
 		self._LoadData(data)
 
 	def _LoadData(self, data):
-		print("_LoadData", data)
 		if data == None:
 			self.__New = True
 		else:

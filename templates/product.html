@@ -14,9 +14,9 @@
             <tbody>
                 {% for ob in productList %}
                     <tr>
-                        <td>{{ ob.id }}</td>
-                        <td>{{ ob.name }}</td>
-                        <td>{{ ob.info }}</td>
+                        <td>{{ ob.m_ID }}</td>
+                        <td>{{ ob.Data["m_Name"] }}</td>
+                        <td>{{ ob.Data["m_Info"] }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

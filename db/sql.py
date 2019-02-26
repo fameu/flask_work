@@ -26,7 +26,6 @@ def _SInsert(tid, id, data):
 
 	for k, v in data.iteritems():
 		fields += k + ","
-		print(k, v, isinstance(v, str))
 		if isinstance(v, str):
 			s = "\"%s\","%(v)
 		elif v == None:
@@ -70,6 +69,9 @@ def _SSaveSql(tid, id, data):
 
 	return ""
 
+def _SQueryRow(tid):
+	return "pragma table_info(\"%s\")"%(DTABLE_NAME[tid])
+
 def _SQuery(tid, id):
 	return "select * from %s where %s = %d"%(DTABLE_NAME[tid], DTABLE_PRIMARYKEY[tid], id)
 
@@ -94,6 +96,7 @@ def SSave(tid, id, data):
 # ≤È—Ø
 def SQuery(tid, id):
 	sql = _SQuery(tid, id)
+	sqlrow = _SQueryRow(tid)
 
 	if SQL_TYPE == SSQL_SQLITE:
-		return sqlite.Query(sql)
+		return sqlite.Query(sqlrow), sqlite.Query(sql)

@@ -12,7 +12,6 @@ DB_NAME	= "db/db_sqlite3.db"
 
 
 def New(sql):
-	print(sql)
 	con = sqlite3.connect(DB_NAME)
 	c = con.cursor()
 	c.execute(sql)
