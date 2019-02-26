@@ -11,19 +11,19 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html", title="出入库管理")
+    return render_template("index.html", title="index")
 
 @app.route("/product/add", methods=["GET", "POST"])
 def productAdd():
 	postData = request.form
 	if request.method == "POST":
 		data = {}
-		data["name"] = postData["name"]
-		data["info"] = postData["info"]
+		data["m_Name"] = str(postData["name"])
+		data["m_Info"] = str(postData["info"])
 		model.product.g_Products.NewProduct(data)
 
 	context = {
-		"title"         : "产品",
+		"title"         : "product",
 		"productList"   : model.product.g_Products.Products
 	}
 	return render_template("product.html", **context)

@@ -8,28 +8,33 @@
 # 实现SQLite的连接
 import sqlite3
 
-DB_NAME	= "db_zqq.db"
+DB_NAME	= "db/db_sqlite3.db"
 
-if not globals().has_key("g_Connect"):
-	g_Connect = sqlite3.connect(DB_NAME)
 
 def New(sql):
-	c = g_Connect.cursor()
+	print(sql)
+	con = sqlite3.connect(DB_NAME)
+	c = con.cursor()
 	c.execute(sql)
 	c.close()
-	g_Connect.commit()
+	con.commit()
+	con.close()
 
 def Save(sql):
-	c = g_Connect.cursor()
+	con = sqlite3.connect(DB_NAME)
+	c = con.cursor()
 	c.execute(sql)
 	c.close()
-	g_Connect.commit()
+	con.commit()
+	con.close()
 
 def Query(sql):
-	c = g_Connect.cursor()
+	con = sqlite3.connect(DB_NAME)
+	c = con.cursor()
 	c.execute(sql)
 	data = c.fetchall()
 	c.close()
-	g_Connect.commit()
+	con.commit()
+	con.close()
 	return data
 

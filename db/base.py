@@ -7,8 +7,6 @@
 from define import *
 from sql import *
 
-
-
 class CSaveObject(object):
 	m_DataTable = None
 
@@ -25,7 +23,7 @@ class CSaveObject(object):
 
 
 	# 初始化 - 从0新建，或者读取数据库
-	def __int__(self, id):
+	def __init__(self, id):
 		self.m_ID = id
 		self.Data = {}		# 存数据库的数据
 		self.ApplyData = {}	# 不存数据库的数据
@@ -40,13 +38,13 @@ class CSaveObject(object):
 	# 从数据库数据到内存数据的转换
 	def _Sql2Data(self, data):
 		pd = {}
-		for k, v in self.m_EasySave:
+		for k, v in self.m_EasySave.iteritems():
 			pd[v] = data.get(k)
 
-		for k, v in self.m_DiffSave:
+		for k, v in self.m_DiffSave.iteritems():
 			pd[v] = evalstring(data.get(k))
 
-		for k, vlst in self.m_SubSaveKey:
+		for k, vlst in self.m_SubSaveKey.iteritems():
 			d = evalstring(data.get(k))
 			for v in vlst:
 				pd[v] = d.get(v)
@@ -55,19 +53,19 @@ class CSaveObject(object):
 	# 从内存数据到数据库数据的转换
 	def _Data2Sql(self):
 		d = {}
-		for k, v in self.m_EasySave:
+		for k, v in self.m_EasySave.iteritems():
 			if k not in self.m_SubSave:
-				d[v] = self.Data.get(k)
+				d[k] = self.Data.get(v)
 
-		for k, v in self.m_DiffSave:
+		for k, v in self.m_DiffSave.iteritems():
 			if k not in self.m_SubSave:
-				d[v] = formatstring(self.Data.get(k))
+				d[k] = formatstring(self.Data.get(v))
 
 		if len(self.m_SubSaveKey):
-			for k, vlst in self.m_SubSaveKey:
+			for k, vlst in self.m_SubSaveKey.iteritems():
 				dk = {}
 				for v in vlst:
-					dk[v] = self.Data.get(v)
+					dk[k] = self.Data.get(v)
 				d[k] = formatstring(dk)
 		return d
 	# ------------- 辅助函数 ------------
@@ -105,6 +103,7 @@ class CSaveObject(object):
 		self._LoadData(data)
 
 	def _LoadData(self, data):
+		print("_LoadData", data)
 		if data == None:
 			self.__New = True
 		else:

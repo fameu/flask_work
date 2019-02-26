@@ -12,7 +12,6 @@ PRODUCT_MAX	= 500	# 最多保存500个产品
 class CProduct(CSaveObject):
 	m_DataTable = DTABLE_PRODUCT
 	m_EasySave = {
-		"pid"	: "m_ID",
 		"name"	: "m_Name",
 	}
 	m_DiffSave = {
@@ -34,7 +33,7 @@ class CProductList(object):
 		return len(self.Products) >= PRODUCT_MAX
 
 	def LoadProducts(self):
-		for id in xrange(1, Product.QueryMax()):
+		for id in xrange(1, CProduct.QueryMax()):
 			pob = CProduct(id)
 			self.Products.append(pob)
 

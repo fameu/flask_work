@@ -20,12 +20,13 @@ SQL_TYPE	= SSQL_SQLITE
 # 这里需要有个防注入功能，因为是一个直接的sql语句，需要避免sql注入
 
 # 主要为了避免select 和 insert 语句放开的话出现异步问题，所以这里选择只设置一次
-def _SNew(tid, id, data):
+def _SInsert(tid, id, data):
 	fields = ""
 	values = ""
 
 	for k, v in data.iteritems():
 		fields += k + ","
+		print(k, v, isinstance(v, str))
 		if isinstance(v, str):
 			s = "\"%s\","%(v)
 		elif v == None:
@@ -36,22 +37,23 @@ def _SNew(tid, id, data):
 
 	if len(s) > 0:
 		if id > 0:
-			return "insert %s(%s, %s) values(%s, %s)"%(
+			return "insert into %s(%s, %s) values(%s, %s)"%(
 				DTABLE_NAME[tid], DTABLE_PRIMARYKEY[tid], fields,
 				id, values
 			)
 		else:
-			return "insert %s(%s, %s) select if(max(%s) is NULL, 0, max(%s))+1, %s from %s;"%(
-				DTABLE_NAME[tid], DTABLE_PRIMARYKEY[tid], fields,
-				DTABLE_PRIMARYKEY[tid],	DTABLE_PRIMARYKEY[tid],
-				values, DTABLE_NAME[tid]
+			return "insert into %s(%s, %s) select ifnull(max(%s), 0)+1, %s from %s;"%(
+				DTABLE_NAME[tid],
+				DTABLE_PRIMARYKEY[tid], fields[:-1],
+				DTABLE_PRIMARYKEY[tid],	values[:-1],
+				DTABLE_NAME[tid]
 			)
 	return ""
 
 def _SMaxID(tid):
 	return "select max(%s) from %s"%(DTABLE_PRIMARYKEY[tid], DTABLE_NAME[tid])
 
-def _SSave(tid, id, data):
+def _SSaveSql(tid, id, data):
 	s = ""
 	for k, v in data.iteritems():
 		if isinstance(v, str):
@@ -76,12 +78,12 @@ def SNew(tid, id, data):
 	sql = _SInsert(tid, id, data)
 	if SQL_TYPE == SSQL_SQLITE:
 		sqlite.New(sql)
-		return id or  SMaxID(tid, id)
+		return id or  SMaxID(tid)
 
 def SMaxID(tid):
 	maxsql = _SMaxID(tid)
 	if SQL_TYPE == SSQL_SQLITE:
-		return sqlite.Query(maxsql)
+		return sqlite.Query(maxsql)[0][0] or 0
 # 保存
 def SSave(tid, id, data):
 	sql = _SSaveSql(tid, id, data)
